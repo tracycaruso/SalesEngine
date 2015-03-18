@@ -32,6 +32,7 @@ class MerchantRespoitoryTest < Minitest::Test
   end
 
   def test_if_responds_to_most_revenue
+    skip
     repository = MerchantRepository.new(@fake_data, @sales_engine)
     assert repository.respond_to?(:most_revenue)
   end

@@ -67,7 +67,31 @@ class MerchantRepository
   end
 
   #BUSINESS LOGIC
-  
+
+  def most_revenue(num)
+    @merchants.sort_by {|merchant| merchant.revenue}.reverse[0..num-1]
+  end
+
+  def revenue(date)
+    @merchants.reduce(0) { |sum, merchant| sum + merchant.revenue(date) }
+  end
+
+  def most_items(num)
+    sorted_merchants_and_items_sold = merchants_and_items_sold.sort_by do |n|
+      n[1]
+    end.reverse
+    sorted_merchants_and_items_sold.map do |n|
+      n[0]
+    end[0..num-1]
+  end
+
+  def merchants_and_items_sold
+    @merchants.map do |merchant|
+      [ merchant, merchant.number_of_items_sold ]
+    end
+  end
+
+
 
 
 

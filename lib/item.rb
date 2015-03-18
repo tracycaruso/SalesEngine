@@ -35,10 +35,23 @@ class Item
     parse_date(all_invoices.max_by { |date, quantity| quantity })
   end
 
-  def all_invoices
-  end
-
   def parse_date(date)
     Date.parse(date[0])
   end
+
+
+  def successful_invoice_items
+    invoice_items.select { |invoice_item| invoice_item.success? }
+  end
+
+  def total_item_revenue
+    revenues = successful_invoice_items.map { |invoice_item| invoice_item.revenue }
+    revenues.reduce(:+)
+  end
+
+  def total_item_quantity
+    quantities = successful_invoice_items.map { |invoice_item| invoice_item.quantity }
+    quantities.reduce(:+)
+  end
+
 end

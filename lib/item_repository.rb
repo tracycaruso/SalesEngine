@@ -87,7 +87,15 @@ class ItemRepository
     engine.find_merchant_by_id(merchant_id)
   end
 
+  def most_revenue(x)
+     items_sorted_by_revenue = @items.sort_by {|item| @items.total_item_revenue.nil? ? 0 : item.total_item_revenue}
+     items_sorted_by_revenue.reverse.first(x)
+   end
 
+  def most_items(x)
+    items_sorted_by_quantity = @items.sort_by {|item| item.total_item_quantity.nil? ? 0 : item.total_item_quantity}
+    items_sorted_by_quantity.reverse.first(x)
+  end
 
 
   private

@@ -31,24 +31,37 @@ class Merchant
   end
 
   def unsuccessful_invoices
-    # invoices.select {|invoice| invoice.failure?}
     invoices - successful_invoices
   end
 
   ##revenue
-  def revenue(date = nil)
-    revenues = merchant_invoice_items.map do |item|
-      item.quantity.to_i * item.unit_price.to_i
+  def revenue(date=nil)
+    if date==nil
+      revenues = merchant_invoice_items.map { |invoice_item| invoice_item.quantity.to_i * invoice_item.unit_price.to_i }
+    else
+      merchant_invoice_items = invoices_matching_date.flat_map { |invoice| invoice.invoice_items }
+      revenues = merchant_invoice_items.map { |invoice_item| invoice_item.quantity.to_i * invoice_item.unit_price.to_i }
     end
-    convert_to_dollars(revenues)
+    convert_to_dollars(revenues.reduce(:+))
   end
 
   def merchant_invoice_items
     successful_invoices.flat_map {|invoice| invoice.invoice_items}
   end
 
+  def invoices_matching_date
+    successful_invoices.select {|invoice| invoice.created_at.to_s == date.to_s }
+  end
+
+  def successful_invoices_by_date(date)
+    return successful_invoices if date == nil
+      successful_invoices.select do |invoice|
+        Date.parse(invoice.created_at) == date
+      end
+  end
+
   def convert_to_dollars(money)
-    BigDecimal.new(money.reduce(:+))/100
+    BigDecimal.new(money)/100
   end
 
   ##favorite_customer
@@ -60,11 +73,19 @@ class Merchant
     all_customers.max_by {|customer| customer[1].length}.last.first.customer
   end
 
-  ##pending_invoices
-  ## expected 4 got 9 ?
+  ##customers_pending_invoices
   def customers_with_pending_invoices
     unsuccessful_invoices.map {|invoice| invoice.customer}
   end
+
+  ##
+  def number_of_items_sold
+   successful_invoices.reduce(0) do |sum, invoice|
+     sum + invoice.invoice_items.reduce(0) do |sum, invoice_item|
+       sum + invoice_item.quantity
+     end
+   end
+ end
 
 
 end

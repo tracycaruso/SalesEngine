@@ -91,6 +91,28 @@ class InvoiceRepository
     engine.find_items_by_invoice_id(id)
   end
 
+
+
+  # def create(input)
+  #   invoice = Invoice.new(
+  #     id = invoices.last.id + 1,
+  #     customer_id = input[:customer].id,
+  #     merchant_id = input[:merchant].id,
+  #     status = input[:status],
+  #     created_at = Time.now,
+  #     updated_at = Time.now,
+  #     self,
+  #   )
+  #   invoices << invoice
+  #
+  #   create_quantity_hash(input)
+  #
+  #   input[:items].each do |item|
+  #     sales_engine.create_new_invoice_item(item, invoices.last.id, @hash[item])
+  #   end
+  #   invoice
+  # end
+
   private
   def find_by_attribute(search_value, attribute)
     @invoices.find{|item| item.send(attribute) == search_value}

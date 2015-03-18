@@ -266,5 +266,27 @@ class ItemRepositoryTest < Minitest::Test
     matching_dates = repository.all.count{|e| e.created_at == "2012-03-27 14:54:00 UTC"}
     assert_equal matching_dates, items.length
   end
+  # 
+  # def test_responds_to_successful_invoice_items
+  #   repository = ItemRepository.new(@fake_data, @sales_engine)
+  #   assert repository.respond_to?(:successful_invoice_items)
+  # end
+  #
+  # def test_successful_invoice_returns_items
+  #   repository = ItemRepository.new(@fake_data, @sales_engine)
+  #   assert_instance_of Array, repository.successful_invoice_items
+  # end
+  #
+  #
+  # def test_responds_to_most_revenue
+  #   repository = ItemRepository.new(@fake_data, @sales_engine)
+  #   assert repository.respond_to?(:most_revenue)
+  # end
+  #
+  # def test_responds_to_revenue
+  #   repository = ItemRepository.new(@fake_data, @sales_engine)
+  #   assert repository.respond_to?(:revenue)
+  # end
+
 
 end

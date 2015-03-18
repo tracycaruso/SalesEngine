@@ -36,8 +36,8 @@ class CustomerRepositoryTest < Minitest::Test
 
    def test_it_returns_a_random_customer
      repository = CustomerRepository.new(@fake_data, @sales_engine)
-     customers = 3.times.map{repository.random}
-     assert_equal customers.length, customers.uniq.length
+     customers = 10.times.map{repository.random}
+     assert customers.uniq.length > 5
    end
 
    def test_it_responds_to_find_by_id

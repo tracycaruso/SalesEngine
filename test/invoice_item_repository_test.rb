@@ -50,8 +50,8 @@ class InvoiceItemRepositoryTest < Minitest::Test
 
   def test_returns_a_random_invoice_item
     repository = InvoiceItemRepository.new(@fake_data, @sales_engine)
-    invoice_items = 3.times.map{repository.random}
-    assert_equal invoice_items.length, invoice_items.uniq.length
+    invoice_items = 10.times.map{repository.random}
+    assert invoice_items.uniq.length > 5
   end
 
   def test_responds_to_find_by_id
