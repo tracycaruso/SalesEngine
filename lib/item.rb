@@ -23,7 +23,7 @@ class Item
   end
 
   def dated_invoice_items
-    invoice_items.group_by {|invoice_item| invoice_item.invoice.created_at }
+    invoice_items.group_by {|invoice_item| invoice_item.invoice.created_at.to_s}
   end
 
   #separate into parts

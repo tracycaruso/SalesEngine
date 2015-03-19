@@ -33,4 +33,8 @@ class Customer
   def favorite_merchant
     group_merchants.max_by { |n| n[1].length }.first
   end
+
+  def successful_invoices
+    invoices.select { |invoice| invoice.success?}
+  end
 end

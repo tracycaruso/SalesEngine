@@ -1,6 +1,7 @@
 require_relative 'test_helper'
 require_relative '../lib/merchant'
 require_relative '../lib/merchant_repository'
+require 'bigdecimal'
 
 class MerchantTest < Minitest::Test
   def setup
@@ -54,6 +55,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_responds_to_merchant_invoice_items
+    skip
     merchant = Merchant.new(1, 'Schroeder-Jerde', '2012-03-27 14:53:59 UTC', '2012-03-27 14:53:59 UTC', @merchant_repository)
     assert merchant.respond_to?(:merchant_invoice_items)
   end
@@ -91,6 +93,33 @@ class MerchantTest < Minitest::Test
     assert_equal 10, merchant.merchant_invoice_items
   end
 
+  def test_it_finds_invoices_for_merchant
+    parent = Minitest::Mock.new
+    merchant = Merchant.new(1, "merchant first_name", "2012-03-27 14:53:59 UTC", "2012-03-27 14:45:59 UTC", parent)
+    parent.expect(:find_invoices, [1, 2], [merchant.id])
+    assert_equal [1, 2], merchant.invoices
+    parent.verify
+  end
+
+  def test_revenue_for_merchant
+    skip
+    sales_engine = SalesEngine.new("./support/")
+    sales_engine.startup
+    assert_equal BigDecimal.new("10283.02"), sales_engine.merchant_repository.merchants[1].revenue
+  end
+
+  def test_items_sold
+    skip
+    sales_engine = SalesEngine.new("./support/")
+    sales_engine.startup
+    assert_equal 23, sales_engine.merchant_repository.merchants[50].items_sold
+  end
+
+  def test_customer_with_pending_invoices
+    sales_engine = SalesEngine.new("./support/")
+    sales_engine.startup
+    assert_equal 1, sales_engine.merchant_repository.merchants[1].customers_with_pending_invoices.inspect
+  end
 
 
 end

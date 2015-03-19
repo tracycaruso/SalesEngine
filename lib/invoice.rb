@@ -1,3 +1,5 @@
+require'date'
+
 class Invoice
   attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at, :repository
 
@@ -6,7 +8,7 @@ class Invoice
     @customer_id = customer_id.to_i
     @merchant_id = merchant_id.to_i
     @status = status
-    @created_at = created_at
+    @created_at = Date.parse(created_at)
     @updated_at = updated_at
     @repository = repository
   end
@@ -32,7 +34,11 @@ class Invoice
   end
 
   def success?
-   transactions.any? { |transaction| transaction.result == "success"}
+    transactions.any? { |transaction| transaction.result == "success"}
+  end
+
+  def charge(input)
+   invoice_repository.new_charge(input, id)
   end
 
 end
