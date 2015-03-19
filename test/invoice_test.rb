@@ -16,7 +16,7 @@ class InvoiceTest < Minitest::Test
   def test_it_knows_its_parent
     repository = InvoiceRepository.new(@fake_data, @sales_engine)
     invoice = Invoice.new(1, 1, 26, "shipped", "2012-03-25 09:54:09", "UTC,2012-03-25 09:54:09 UTC", repository)
-    assert_equal repository, invoice.repository
+    assert_equal repository, invoice.repo
   end
 
   def test_it_has_an_id
@@ -41,7 +41,7 @@ class InvoiceTest < Minitest::Test
 
   def test_it_has_a_created_at
     invoice = Invoice.new(1, 20, 30, "status", "2012-03-27 14:53:59 UTC", "2012-03-27 14:53:59 UTC", "repository")
-    assert_equal "2012-03-27 14:53:59 UTC", invoice.created_at
+    assert_equal Date.parse("2012-03-27 14:53:59 UTC"), invoice.created_at
   end
 
 
@@ -56,14 +56,6 @@ class InvoiceTest < Minitest::Test
     invoice = Invoice.new(1, 1, 26, "shipped", "2012-03-25 09:54:09", "UTC,2012-03-25 09:54:09 UTC", @invoice_repository)
     @invoice_repository.expect(:find_invoice_items, [3] , [invoice.id])
     assert_equal [3], invoice.invoice_items
-    @invoice_repository.verify
-  end
-
-  def test_invoice_finds_matching_items
-    skip
-    invoice = Invoice.new(1, 1, 26, "shipped", "2012-03-25 09:54:09", "UTC,2012-03-25 09:54:09 UTC", @invoice_repository)
-    @invoice_repository.expect(:find_items, [3] , [invoice.id])
-    assert_equal [3], invoice.item_id
     @invoice_repository.verify
   end
 

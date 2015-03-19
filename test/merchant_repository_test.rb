@@ -46,31 +46,130 @@ class MerchantRespoitoryTest < Minitest::Test
     @sales_engine.verify
   end
 
-  def test_revenue
-    skip
-    engine = SalesEngine.new("./support")
-    engine.startup
-    assert_equal BigDecimal.new("666444.52"), engine.merchant_repository.revenue(nil)
+  def test_responds_to_all_method
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:all)
   end
 
-  def test_most_revenue
-    skip
-    engine = SalesEngine.new("./support")
-    engine.startup
-    assert_equal "Bechtelar, Jones and Stokes", engine.merchant_repository.most_revenue(1).inspect
+  def test_returns_all_merchants
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert_equal repository.merchants, repository.all
   end
 
-  def test_items_sold
-    engine = SalesEngine.new("./support")
-    engine.startup
-    assert_equal 20, engine.merchant_repository.merchants_and_items_sold.length
+  def test_responds_to_random_method
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:random)
   end
 
-  def test_most_items
-    engine = SalesEngine.new("./support")
-    engine.startup
-    assert_equal "Schroeder-Jerde", engine.merchant_repository.most_items(1).first.name
+  def test_returns_random_merchants
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    merchants = 2.times.map{repository.random}
+    assert_equal merchants.length, merchants.uniq.length
   end
 
+  def test_responds_to_find_by_id
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_by_id)
+  end
+
+  def test_responds_to_find_by_name
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_by_name)
+  end
+
+  def test_responds_to_find_by_created_at
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_by_created_at)
+  end
+
+  def test_responds_to_find_by_updated_at
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_by_updated_at)
+  end
+
+  def test_responds_to_find_all_by_id
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_all_by_id)
+  end
+
+  def test_returns_merchant_by_id
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert_instance_of Merchant, repository.find_by_id(1)
+  end
+
+  def test_it_can_find_invoice_by_id
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    merchant = repository.find_by_id(1)
+    assert_equal "Schroeder-Jerde", merchant.name
+  end
+
+  def test_responds_to_find_all_by_name
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_all_by_name)
+  end
+
+  def test_it_can_find_invoice_by_name
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    merchant = repository.find_by_name("Schroeder-Jerde")
+    assert_equal 1, merchant.id
+  end
+
+  def test_responds_to_find_all_by_created_at
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_all_by_created_at)
+  end
+
+  def test_it_can_find_invoice_by_created_at
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    merchant = repository.find_by_created_at("2012-03-27 14:53:59 UTC")
+    assert_equal 1, merchant.id
+  end
+
+  def test_responds_to_find_all_by_updated_at
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_all_by_updated_at)
+  end
+
+  def test_it_can_find_invoice_by_updated_at
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    merchant = repository.find_by_created_at("2012-03-27 14:53:59 UTC")
+    assert_equal 1, merchant.id
+  end
+
+
+  def test_responds_to_find_items
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_items)
+  end
+
+  def test_responds_to_find_invoices
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:find_invoices)
+  end
+
+  def test_responds_to_most_revenue
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:most_revenue)
+  end
+
+  def test_responds_to_most_items
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:most_items)
+  end
+
+  def test_responds_to_revenue
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:revenue)
+  end
+
+  def test_responds_to_revenue
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:revenue)
+  end
+
+  def test_responds_to_convert_to_dollars
+    repository = MerchantRepository.new(@fake_data, @sales_engine)
+    assert repository.respond_to?(:convert_to_dollars)
+  end
 
 end

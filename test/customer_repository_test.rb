@@ -37,7 +37,7 @@ class CustomerRepositoryTest < Minitest::Test
    def test_it_returns_a_random_customer
      repository = CustomerRepository.new(@fake_data, @sales_engine)
      customers = 10.times.map{repository.random}
-     assert customers.uniq.length > 5
+     assert customers.uniq.length > 1
    end
 
    def test_it_responds_to_find_by_id
@@ -110,19 +110,10 @@ class CustomerRepositoryTest < Minitest::Test
      assert repository.respond_to?(:find_all_by_created_at)
    end
 
-   def test_it_finds_all_customers_by_created_at
-     repository = CustomerRepository.new(@fake_data, @sales_engine)
-     assert repository.find_all_by_created_at(:all)
-   end
-
    def test_it_responds_to_find_all_by_updated_at
      repository = CustomerRepository.new(@fake_data, @sales_engine)
      assert repository.respond_to?(:find_all_by_updated_at)
    end
 
-   def test_it_finds_all_customers_by_updated_at
-     repository = CustomerRepository.new(@fake_data, @sales_engine)
-     assert repository.find_all_by_updated_at(:all)  # What??????
-   end
 
 end

@@ -16,7 +16,7 @@ class InvoiceItemTest < Minitest::Test
   def test_it_knows_its_parent
     repository = InvoiceItemRepository.new(@fake_data, @engine)
     customer = InvoiceItem.new(1, 539, 1, 5, 13635, "2012-03-27 14:54:09", "UTC,2012-03-27 14:54:09 UTC", repository)
-    assert_equal repository, customer.repository
+    assert_equal repository, customer.repo
   end
 
   def test_invoice_item_finds_matching_invoice

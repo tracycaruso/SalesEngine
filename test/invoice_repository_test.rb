@@ -158,19 +158,19 @@ class InvoiceRepositoryTest < Minitest::Test
 
   def test_returns_invoice_by_created_at
     repository = InvoiceRepository.new(@fake_data, @sales_engine)
-    assert_instance_of Invoice, repository.find_by_created_at("2012-03-27 07:54:12 UTC")
+    assert_instance_of Invoice, repository.find_by_created_at(Date.parse("2012-03-27 07:54:12 UTC"))
   end
 
   def test_it_can_find_first_invoice_with_matching_created_at_date
     repository = InvoiceRepository.new(@fake_data, @sales_engine)
-    invoice = repository.find_by_created_at("2012-03-27 07:54:12 UTC")
-    assert_equal 47, invoice.id
+    invoice = repository.find_by_created_at(Date.parse("2012-03-27 07:54:12 UTC"))
+    assert_equal 25, invoice.id
   end
 
   def test_it_can_find_first_invoice_with_another_matching_created_at_date
     repository = InvoiceRepository.new(@fake_data, @sales_engine)
-    invoice = repository.find_by_created_at("2012-03-09 16:54:16 UTC")
-    assert_equal 132, invoice.id
+    invoice = repository.find_by_created_at(Date.parse("2012-03-09 16:54:16 UTC"))
+    assert_equal 6, invoice.id
   end
 
   def test_responds_to_find_by_updated_at
@@ -258,14 +258,14 @@ class InvoiceRepositoryTest < Minitest::Test
 
   def test_returns_all_invoices_by_created_at_date
     repository = InvoiceRepository.new(@fake_data, @sales_engine)
-    invoices = repository.find_all_by_created_at("2012-03-27 07:54:12 UTC")
-    assert_equal 2, invoices.length
+    invoices = repository.find_all_by_created_at(Date.parse("2012-03-27 07:54:12 UTC"))
+    assert_equal 11, invoices.length
   end
 
   def test_returns_all_invoices_by_different_created_at_date
     repository = InvoiceRepository.new(@fake_data, @sales_engine)
-    invoices = repository.find_all_by_created_at("2012-03-09 16:54:16 UTC")
-    assert_equal 2, invoices.length
+    invoices = repository.find_all_by_created_at(Date.parse("2012-03-09 16:54:16 UTC"))
+    assert_equal 10, invoices.length
   end
 
   def test_responds_to_find_all_by_updated_at

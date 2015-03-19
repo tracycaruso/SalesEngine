@@ -44,7 +44,6 @@ class Merchant
     BigDecimal.new(revenues.reduce(:+))/100
   end
 
-
   def total_merchant_revenue
     revenues = successful_invoice_items.map do |invoice_item|
       invoice_item.revenue
@@ -82,12 +81,4 @@ class Merchant
   def customers_with_pending_invoices
     unsuccessful_invoices.map {|invoice| invoice.customer}
   end
-
-  def number_of_items_sold
-   successful_invoices.reduce(0) do |sum, invoice|
-     sum + invoice.invoice_items.reduce(0) do |sum, invoice_item|
-       sum + invoice_item.quantity
-     end
-   end
- end
 end

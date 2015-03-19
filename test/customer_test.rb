@@ -16,7 +16,7 @@ class CustomerTest < Minitest::Test
   def test_it_knows_its_parent
     repository = CustomerRepository.new(@fake_data, @sales_engine)
     customer = Customer.new(1, "Joey", "Ondricka", "2012-03-27 14:54:09 UTC", "2012-03-27 14:54:09 UTC", repository)
-    assert_equal repository, customer.repository
+    assert_equal repository, customer.repo
   end
 
   def test_customer_finds_matching_invoices
