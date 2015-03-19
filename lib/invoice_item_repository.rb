@@ -87,6 +87,26 @@ class InvoiceItemRepository
     engine.find_item_by_id(item_id)
   end
 
+  def next_id
+    invoice_items.last.id + 1
+  end
+
+  def create_new_invoice_items(items, id, quantity)
+    items.each do |item|
+      data = {
+      id:     next_id,
+      item_id:  item.id,
+      invoice_id: id,
+      quantity: quantity[item],
+      unit_price: item.unit_price,
+      created_at: "#{Date.new}",
+      updated_at: "#{Date.new}",
+              }
+      invoice_item = InvoiceItem.new(data[:id], data[:item_id], data[:invoice_id], data[:quantity], data[:unit_price], data[:created_at], data[:updated_at], self)
+      @invoice_items << invoice_item
+    end
+  end
+
 
   private
   def find_by_attribute(search_value, attribute)

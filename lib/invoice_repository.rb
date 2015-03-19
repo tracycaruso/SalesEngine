@@ -92,26 +92,33 @@ class InvoiceRepository
   end
 
 
+  def create_quantity_hash(inputs)
+      @item_quantities = Hash.new(0)
+      inputs[:items].each do |item|
+        @item_quantities[item] += 1
+      end
+    end
 
-  # def create(input)
-  #   invoice = Invoice.new(
-  #     id = invoices.last.id + 1,
-  #     customer_id = input[:customer].id,
-  #     merchant_id = input[:merchant].id,
-  #     status = input[:status],
-  #     created_at = Time.now,
-  #     updated_at = Time.now,
-  #     self,
-  #   )
-  #   invoices << invoice
-  #
-  #   create_quantity_hash(input)
-  #
-  #   input[:items].each do |item|
-  #     sales_engine.create_new_invoice_item(item, invoices.last.id, @hash[item])
-  #   end
-  #   invoice
-  # end
+    def create(inputs)
+      data =  {
+        id:           "#{invoices.last.id + 1}",
+        customer_id:  inputs[:customer].id,
+        merchant_id:  inputs[:merchant].id,
+        status:       inputs[:status],
+        created_at:   "#{Date.new}",
+        updated_at:   "#{Date.new}"
+          }
+
+      new_invoice = Invoice.new(data[:id], data[:customer_id], data[:merchant_id], data[:status], data[:created_at], data[:updated_at], self)
+      invoices << new_invoice
+      create_quantity_hash(inputs)
+      engine.create_new_items_with_invoice_id(inputs[:items], new_invoice.id, @item_quantities)
+      new_invoice
+    end
+
+    def new_charge(card_info, id)
+      engine.new_charge(card_info, id)
+    end
 
   private
   def find_by_attribute(search_value, attribute)

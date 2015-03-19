@@ -38,7 +38,7 @@ class Invoice
   end
 
   def charge(input)
-   invoice_repository.new_charge(input, id)
+   repository.new_charge(input, id)
   end
 
 end
