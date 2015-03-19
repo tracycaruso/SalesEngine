@@ -1,17 +1,24 @@
 class Customer
-  attr_reader :id, :first_name, :last_name, :created_at, :updated_at, :repository
+  attr_reader(
+    :id,
+    :first_name,
+    :last_name,
+    :created_at,
+    :updated_at,
+    :repo
+  )
 
-  def initialize(id, first_name, last_name, created_at, updated_at, repository)
-    @id = id.to_i
+  def initialize(id, first_name, last_name, created_at, updated_at, repo)
+    @id         = id.to_i
     @first_name = first_name
-    @last_name = last_name
+    @last_name  = last_name
     @created_at = created_at
     @updated_at = updated_at
-    @repository = repository
+    @repo       = repo
   end
 
   def invoices
-    repository.find_invoices(id)
+    repo.find_invoices(id)
   end
 
   def transactions

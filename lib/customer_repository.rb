@@ -69,7 +69,6 @@ class CustomerRepository
     find_all_by_attribute(search_value, :updated_at)
   end
 
-  #customer methods
   def find_invoices(id)
     @engine.find_invoices_by_customer_id(id)
   end

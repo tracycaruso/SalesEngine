@@ -1,24 +1,40 @@
 require'date'
 
 class Invoice
-  attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at, :repository
+  attr_reader(
+    :id,
+    :customer_id,
+    :merchant_id,
+    :status,
+    :created_at,
+    :updated_at,
+    :repo
+  )
 
-  def initialize(id, customer_id, merchant_id, status, created_at, updated_at, repository)
-    @id = id.to_i
+  def initialize(
+    id,
+    customer_id,
+    merchant_id,
+    status,
+    created_at,
+    updated_at,
+    repo
+  )
+    @id          = id.to_i
     @customer_id = customer_id.to_i
     @merchant_id = merchant_id.to_i
-    @status = status
-    @created_at = Date.parse(created_at)
-    @updated_at = updated_at
-    @repository = repository
+    @status      = status
+    @created_at  = Date.parse(created_at)
+    @updated_at  = updated_at
+    @repo        = repo
   end
 
   def transactions
-    repository.find_transactions(id)
+    repo.find_transactions(id)
   end
 
   def invoice_items
-    repository.find_invoice_items(id)
+    repo.find_invoice_items(id)
   end
 
   def items
@@ -26,11 +42,11 @@ class Invoice
   end
 
   def customer
-    repository.find_customer(customer_id)
+    repo.find_customer(customer_id)
   end
 
   def merchant
-    repository.find_merchant(merchant_id)
+    repo.find_merchant(merchant_id)
   end
 
   def success?
@@ -38,7 +54,6 @@ class Invoice
   end
 
   def charge(input)
-   repository.new_charge(input, id)
+    repo.new_charge(input, id)
   end
-
 end

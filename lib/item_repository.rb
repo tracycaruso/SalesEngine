@@ -5,7 +5,16 @@ class ItemRepository
 
   def initialize(data, engine)
     @items = data.map do |line|
-      Item.new(line[:id], line[:name], line[:description], line[:unit_price], line[:merchant_id], line[:created_at], line[:updated_at], self)
+      Item.new(
+        line[:id],
+        line[:name],
+        line[:description],
+        line[:unit_price],
+        line[:merchant_id],
+        line[:created_at],
+        line[:updated_at],
+        self
+      )
     end
     @engine = engine
   end
@@ -78,7 +87,6 @@ class ItemRepository
     find_all_by_attribute(search_value, :updated_at)
   end
 
-  #invoice repository
   def find_invoice_items(item_id)
     engine.find_invoice_items_by_item_id(item_id)
   end
@@ -88,16 +96,18 @@ class ItemRepository
   end
 
   def most_revenue(x)
-     items_sorted_by_revenue = @items.sort_by {|item| item.total_item_revenue.nil? ? 0 : item.total_item_revenue}
-     items_sorted_by_revenue.reverse.first(x)
-   end
-
-  def most_items(x)
-    items_sorted_by_quantity = @items.sort_by {|item| item.total_item_quantity.nil? ? 0 : item.total_item_quantity}
-    items_sorted_by_quantity.reverse.first(x)
+    items_sorted_by_revenue = @items.sort_by do |item|
+      item.total_item_revenue.nil? ? 0 : item.total_item_revenue
+    end
+    items_sorted_by_revenue.reverse.first(x)
   end
 
-
+  def most_items(x)
+    items_sorted_by_quantity = @items.sort_by do |item|
+      item.total_item_quantity.nil? ? 0 : item.total_item_quantity
+    end
+  items_sorted_by_quantity.reverse.first(x)
+  end
 
   private
   def find_by_attribute(search_value, attribute)

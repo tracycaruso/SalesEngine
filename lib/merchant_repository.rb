@@ -7,7 +7,13 @@ class MerchantRepository
 
   def initialize(data, engine)
     @merchants = data.map do |line|
-      Merchant.new(line[:id], line[:name], line[:created_at], line[:updated_at], self)
+      Merchant.new(
+        line[:id],
+        line[:name],
+        line[:created_at],
+        line[:updated_at],
+        self
+      )
     end
     @engine = engine
   end
@@ -56,9 +62,6 @@ class MerchantRepository
     find_all_by_attribute(search_value, :updated_at)
   end
 
-
-
-  #MERCHANT METHODS
   def find_items(id)
     engine.find_items_by_merchant_id(id)
   end
@@ -67,40 +70,44 @@ class MerchantRepository
     engine.find_invoices_by_merchant_id(id)
   end
 
-  #BUSINESS LOGIC
+  def most_revenue(x)
+    merchants_sorted_by_revenue = @merchants.sort_by do |merchant|
+      merchant.total_merchant_revenue
+    end
+    merchants_sorted_by_revenue.reverse.first(x)
+  end
 
-    def most_revenue(x)
-       merchants_sorted_by_revenue = @merchants.sort_by do |merchant|
-          merchant.total_merchant_revenue
-        end
-       merchants_sorted_by_revenue.reverse.first(x)
-     end
+  def most_items(x)
+    merchants_sorted_by_items = @merchants.sort_by do |merchant|
+      merchant.total_merchant_items
+    end
+    merchants_sorted_by_items.reverse.first(x)
+  end
 
-     def most_items(x)
-       merchants_sorted_by_items = @merchants.sort_by do |merchant|
-          merchant.total_merchant_items
-        end
-       merchants_sorted_by_items.reverse.first(x)
-     end
+  def revenue(date)
+    matching_invoices = @merchants.flat_map do |merchant|
+      merchant.successful_invoices
+    end
 
-     def revenue(date)
-       successful_invoices = @merchants.flat_map do |merchant|
-          merchant.successful_invoices
-        end
-       successful_invoices_for_date = successful_invoices.select do |invoice|
-          invoice.created_at.to_s == date.to_s
-        end
-       successful_invoice_items = successful_invoices_for_date.flat_map do |invoice|
-         invoice.invoice_items
-       end
-       revenues = successful_invoice_items.map do |invoice_item|
-         invoice_item.revenue
-       end
-       BigDecimal.new(revenues.reduce(:+))/100
-     end
+    matching_invoices_date = matching_invoices.select do |invoice|
+      invoice.created_at.to_s == date.to_s
+    end
 
+    matching_invoice_items = matching_invoices_date.flat_map do |invoice|
+      invoice.invoice_items
+    end
 
+    revenues = matching_invoice_items.map do |invoice_item|
+      invoice_item.revenue
+    end
 
+    convert_to_dollars(revenues.reduce(:+))
+
+  end
+
+  def convert_to_dollars(amount)
+    BigDecimal.new(amount)/100
+  end
 
   def inspect
     "#<#{self.class} #{@merchants.size} rows>"
